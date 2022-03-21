@@ -13,4 +13,4 @@ The interest rate and monthly savings amount can be adjusted using the sliders.
 </p>
 
 ## Credits
-Tests provided for an exercise by the [University of Helsinki](https://java-programming.mooc.fi/), and modified for purpose.
+Tests provided for the exercise by the [University of Helsinki](https://java-programming.mooc.fi/), and modified for purpose.
