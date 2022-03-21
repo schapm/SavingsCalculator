@@ -2,6 +2,7 @@ package org.schapm.savingscalculator;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -39,6 +40,7 @@ public class SavingsCalculatorApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         initSliders();
+        initLayouts();
 
         Scene scene = new Scene(root, 800, 600);
 
@@ -70,6 +72,33 @@ public class SavingsCalculatorApplication extends Application {
             lineDataInterest.getData().clear();
             //lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
         });
+    }
+
+    private void initLayouts() {
+        root = new BorderPane();
+        root.setPadding(new Insets(10));
+
+        labelMonthlySavings = new Label();
+        labelMonthlySavings.setText(String.valueOf(sliderMonthlySavings.getValue()));
+        labelInterestRate = new Label();
+        labelInterestRate.setText(String.valueOf(sliderInterestRate.getValue()));
+
+        BorderPane borderPaneMonthlySavings = new BorderPane();
+        borderPaneMonthlySavings.setLeft(new Label("Monthly savings"));
+        borderPaneMonthlySavings.setCenter(sliderMonthlySavings);
+        borderPaneMonthlySavings.setRight(labelMonthlySavings);
+
+        BorderPane borderPaneInterestRate = new BorderPane();
+        borderPaneInterestRate.setLeft(new Label("Yearly interest rate"));
+        borderPaneInterestRate.setCenter(sliderInterestRate);
+        borderPaneInterestRate.setRight(labelInterestRate);
+
+        vBox = new VBox();
+        vBox.getChildren().add(borderPaneMonthlySavings);
+        vBox.getChildren().add(borderPaneInterestRate);
+
+        root.setTop(vBox);
+        root.setCenter(lineChart);
     }
 
 }
