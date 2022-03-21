@@ -50,6 +50,18 @@ public class SavingsCalculatorApplication extends Application {
         stage.show();
     }
 
+    public XYChart.Series monthlySavings(XYChart.Series series) {
+        double monthlySavings = sliderMonthlySavings.getValue();
+        double sum = 0;
+
+        for (int i = 0; i <= 30; i++) { // 30 years
+            series.getData().add(new XYChart.Data(i, sum));
+            sum += monthlySavings * 12; // 12 months savings
+        }
+
+        return series;
+    }
+
     private void initSliders() {
         sliderMonthlySavings = new Slider(25, 250, 50); // Min, max & default values
         sliderMonthlySavings.setShowTickLabels(true);
@@ -63,7 +75,7 @@ public class SavingsCalculatorApplication extends Application {
             labelMonthlySavings.setText(String.format("%.1f", new_val));
 
             lineDataMonthly.getData().clear();
-            //lineDataMonthly = monthlySavings(lineDataMonthly); // Recalculate data for monthly savings
+            lineDataMonthly = monthlySavings(lineDataMonthly); // Recalculate data for monthly savings
             lineDataInterest.getData().clear();
             //lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
         });
@@ -91,7 +103,7 @@ public class SavingsCalculatorApplication extends Application {
         lineDataInterest = new XYChart.Series();
         lineDataInterest.setName("Compound Interest");
 
-        //lineChart.getData().add(monthlySavings(lineDataMonthly));
+        lineChart.getData().add(monthlySavings(lineDataMonthly));
         //lineChart.getData().add(compoundInterest(lineDataInterest));
     }
 
