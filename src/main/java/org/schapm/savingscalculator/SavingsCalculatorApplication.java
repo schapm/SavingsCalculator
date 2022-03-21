@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -40,6 +41,7 @@ public class SavingsCalculatorApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         initSliders();
+        initChart();
         initLayouts();
 
         Scene scene = new Scene(root, 800, 600);
@@ -72,6 +74,25 @@ public class SavingsCalculatorApplication extends Application {
             lineDataInterest.getData().clear();
             //lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
         });
+    }
+
+    private void initChart() {
+        NumberAxis xAxis = new NumberAxis(0, 30, 1);
+        xAxis.setLabel("Years");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Savings");
+
+        lineChart = new LineChart(xAxis, yAxis);
+        lineChart.setAnimated(false);
+        lineChart.setTitle("Savings Calculator");
+
+        lineDataMonthly = new XYChart.Series();
+        lineDataMonthly.setName("Monthly Savings");
+        lineDataInterest = new XYChart.Series();
+        lineDataInterest.setName("Compound Interest");
+
+        //lineChart.getData().add(monthlySavings(lineDataMonthly));
+        //lineChart.getData().add(compoundInterest(lineDataInterest));
     }
 
     private void initLayouts() {
