@@ -62,6 +62,23 @@ public class SavingsCalculatorApplication extends Application {
         return series;
     }
 
+    public XYChart.Series compoundInterest(XYChart.Series series) {
+        double interestRatePA = sliderInterestRate.getValue();
+        double monthlySavings = sliderMonthlySavings.getValue();
+        double sum = 0;
+
+        for (int i = 0; i <= 30; i++) { // 30 years
+            double time = 1; // 1 year
+
+            series.getData().add(new XYChart.Data(i, sum));
+            double CI = sum
+                    * (Math.pow((1 + interestRatePA / 100), time));
+            sum = CI + ((monthlySavings * 12) + ((monthlySavings * 12) * (interestRatePA / 100))); // 12 months savings + interest
+        }
+
+        return series;
+    }
+
     private void initSliders() {
         sliderMonthlySavings = new Slider(25, 250, 50); // Min, max & default values
         sliderMonthlySavings.setShowTickLabels(true);
@@ -77,14 +94,14 @@ public class SavingsCalculatorApplication extends Application {
             lineDataMonthly.getData().clear();
             lineDataMonthly = monthlySavings(lineDataMonthly); // Recalculate data for monthly savings
             lineDataInterest.getData().clear();
-            //lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
+            lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
         });
 
         sliderInterestRate.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             labelInterestRate.setText(String.format("%.1f", new_val));
 
             lineDataInterest.getData().clear();
-            //lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
+            lineDataInterest = compoundInterest(lineDataInterest); // Recalculate data for monthly savings + interest
         });
     }
 
@@ -104,7 +121,7 @@ public class SavingsCalculatorApplication extends Application {
         lineDataInterest.setName("Compound Interest");
 
         lineChart.getData().add(monthlySavings(lineDataMonthly));
-        //lineChart.getData().add(compoundInterest(lineDataInterest));
+        lineChart.getData().add(compoundInterest(lineDataInterest));
     }
 
     private void initLayouts() {
